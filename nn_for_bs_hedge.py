@@ -64,7 +64,7 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.lin1 = nn.Linear(1, 16)
         self.lin2 = nn.Linear(16, 1)
-        self.sigmoid1 = nn.Sigmoid();
+        self.sigmoid1 = nn.Sigmoid()
         
     def forward(self, S0):
         out = self.lin1(S0)
@@ -93,8 +93,8 @@ print('Parameters per layer:')
 for i in range(len(params)):
     print(params[i].shape)
 #
-#data_iter = iter(training_loader)
-#inputs, S0, S1, C0 = data_iter.next()
+data_iter = iter(training_loader)
+inputs, S0, S1, C0 = data_iter.next()
 #
 #optimizer.zero_grad()
 #outputs = net(inputs)
