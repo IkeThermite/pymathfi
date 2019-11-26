@@ -16,9 +16,10 @@ torch.manual_seed(0)
 
 # %% Training Parameters
 num_samples = 50000
-batch_size = 100
-num_epochs = 500
-learning_rate = 0.08
+batch_size = 200
+num_epochs = 20
+learning_rate = 0.01
+num_neurons = 16
 
 
 # %% Functions
@@ -84,6 +85,7 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.lin1 = nn.Linear(2, num_neurons)
         self.sig1 = nn.Sigmoid()
+        self.bn1 = nn.BatchNorm1d(num_neurons)
         self.lin2 = nn.Linear(num_neurons, 1)
         self.sig2 = nn.Sigmoid()
         
@@ -95,16 +97,15 @@ class Net(nn.Module):
         
         for i in range(steps):
             self.y = torch.cat((X[:,i,:], self.y), dim=1)
-            self.y = self.sig1(self.lin1(self.y))
+            self.y = self.bn1(self.sig1(self.lin1(self.y)))
             self.y = self.sig2(self.lin2(self.y));
             output.append(self.y)
         
         return output, self.y
 
-num_neurons = 16
 net = Net(num_neurons)
 criterion = nn.MSELoss()
-optimizer = torch.optim.Adam(net.parameters(), lr=learning_rate)
+optimizer = torch.optim.SGD(net.parameters(), lr=learning_rate)
 
 # %% Test Model Construction
 if test_model_construction:
@@ -163,7 +164,7 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
         
-        running_loss += loss.item()
+        running_loss += loss.item() * batch_size
     
     print('[%d] loss: %.6f' % (epoch + 1, running_loss))
 
@@ -179,12 +180,12 @@ outputs, _ = net(grid_X)
 
 plt.figure()
 plt.subplot(1, 2, 1)
-plt.plot(grid_S0, outputs[0].detach().numpy().flatten(), 'b.')
+plt.plot(grid_S0, outputs[0].detach().numpy().flatten(), 'b-')
 plt.plot(grid_S0, BS_delta_0, 'k-')
 
 
 plt.subplot(1, 2, 2)
-plt.plot(grid_S1, outputs[1].detach().numpy().flatten(), 'b.')
+plt.plot(grid_S1, outputs[1].detach().numpy().flatten(), 'b-')
 plt.plot(grid_S1, BS_delta_1, 'k-')
 
 
