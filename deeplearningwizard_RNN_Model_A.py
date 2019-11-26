@@ -27,7 +27,7 @@ print("Number of Labels: {0}".format(test_dataset.test_labels.size()))
 # %% Creating Iterables
 batch_size = 100
 n_iters = 3000 # Total number of iterations
-num_epochs = n_iters / (len(train_dataset) / batch_size) # Divided into epochs
+num_epochs = n_iters // (len(train_dataset) // batch_size) # Divided into epochs
 
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
                                            batch_size=batch_size,
@@ -81,14 +81,67 @@ model = RNNModel(input_dim, hidden_dim, layer_dim, output_dim)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
 
-# %% Check Model Construction
+# %% Check Model Construction and Paramters
 print('Layers in Net:\n', model)
 params = list(model.parameters())
 print('Parameters per layer:')
 for i in range(len(params)):
     print(params[i].shape)
-#
+
+# %% Train Model
+seq_dim = 28 # Number of steps to unroll
+
+iter = 0
+for epoch in range(num_epochs):
+    for i, (images, labels) in enumerate(train_loader):
+        model.train()
+        # Load images as tensors with gradient accumulation abilities
+        images = images.view(-1, seq_dim, input_dim)
+
+        # Clear gradients w.r.t. parameters
+        optimizer.zero_grad()
         
+        # Forward pass to get output / logits
+        # outputs.size() --> 100, 10
+        outputs = model(images)
+        
+        # Calculate Loss: softmax --> cross entropy loss
+        loss = criterion(outputs, labels)
+        
+        # Getting gradients w.r.t. parameters
+        loss.backward()
+        
+        # Updated parameters
+        optimizer.step()
+        
+        iter += 1;
+        
+        if iter % 500 == 0:
+            model.eval()
+            # Calculate accuracy
+            correct = 0
+            total = 0
+            # Iterate through test dataset
+            for images, labels in test_loader:
+                # Load images as tensors with gradient accumulation abilities
+                images = images.view(-1, seq_dim, input_dim)
+                
+                # Forward pass only to get logits / output
+                outputs = model(images)
+        
+                # Get predictions from the maximum value
+                _, predicted = torch.max(outputs.data, 1)
+                
+                # Total number of labels
+                total += labels.size(0)
+                
+                # Total correct predictions
+                correct += (predicted == labels).sum()
+            
+            accuracy = 100 * correct / total
+            
+            # Print Loss
+            print('Iteration: {}. Loss: {}. Accuracy: {}'.format(iter, loss.item(), accuracy))
         
         
         
