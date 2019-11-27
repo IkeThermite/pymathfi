@@ -45,7 +45,7 @@ ax1.set_ylabel('Delta')
 line1, = ax1.plot([], [], lw=2)
 ax1.plot(grid_S0, BS_delta_0, 'k-')
 
-ax2.set_xlim([np.min(grid_S0), np.max(grid_S0)])
+ax2.set_xlim([np.min(grid_S1), np.max(grid_S1)])
 ax2.set_ylim([0, 1])
 ax2.set_xlabel('$S_1$')
 ax2.set_ylabel('Delta')     

@@ -135,7 +135,7 @@ if test_model_construction:
 # %% Train Recurrent Neural Network
 num_iterations = (num_samples / batch_size) - 1
 
-grid_size = 50;
+grid_size = 50
 grid_uniform = np.linspace(0, 1, num=grid_size+2)[1:-1]
 grid_W0 = grid_uniform - 0.5
 grid_dW1 = stats.norm.ppf(grid_uniform) * np.sqrt(dt)
