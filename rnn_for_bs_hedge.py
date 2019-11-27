@@ -9,7 +9,7 @@ import numpy as np
 import scipy.stats as stats
 import torch
 import torch.nn as nn
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 np.random.seed(0)
 torch.manual_seed(0)
@@ -43,7 +43,7 @@ def delta_call_BS(S0, K, T, r, sigma):
     return stats.norm.cdf(d1(S0, K, T, r, sigma));
 
 # %% Parameters
-filename = 'bs_hedge_2'
+filename = 'rnn_bs_hedge'
 test_model_construction = False
 S0 = 100
 K = 100
@@ -142,13 +142,13 @@ grid_dW1 = stats.norm.ppf(grid_uniform) * np.sqrt(dt)
 grid_S0 = (S0_upper_bound - S0_lower_bound) * grid_uniform + S0_lower_bound
 grid_S1 = grid_S0 * np.exp((r - 0.5 * sigma **2) * dt + sigma * grid_dW1)
 grid_X = torch.Tensor(np.hstack([grid_W0.reshape(grid_size,1), grid_dW1.reshape(grid_size,1)]))
+grid_X.unsqueeze_(-1)
 
 BS_delta_0 = delta_call_BS(grid_S0, K, T, r, sigma)
 BS_delta_1 = delta_call_BS(grid_S1, K, T-dt, r, sigma)
-#domain_size = 50;
-#domain_set = torch.Tensor(np.linspace(0, 1).reshape((domain_size,1)))
-#BS_delta_on_domain =  delta_call_BS((S0_upper_bound - S0_lower_bound) * domain_set 
-#                            + S0_lower_bound, K, T, r, sigma)
+
+RNN_delta_0 = np.zeros((grid_size, num_epochs));
+RNN_delta_1 = np.zeros((grid_size, num_epochs));
 
 for epoch in range(num_epochs):
     running_loss = 0.0
@@ -167,26 +167,30 @@ for epoch in range(num_epochs):
         running_loss += loss.item() * batch_size
     
     print('[%d] loss: %.6f' % (epoch + 1, running_loss))
+    predictions, _ = net(grid_X)
+    RNN_delta_0[:, epoch] = predictions[0].detach().numpy().flatten()
+    RNN_delta_1[:, epoch] = predictions[1].detach().numpy().flatten()
 
-# Check the outputs
-grid_X.unsqueeze_(-1)
-outputs, _ = net(grid_X)
-#X = torch.Tensor(np.hstack([W0_values, delta_W1]))
-#X.unsqueeze_(-1)
-#outputs, _ = net(X)
+torch.save(net, 'rnn.pth')
+np.savez(filename, 
+         grid_S0=grid_S0,
+         grid_S1=grid_S1,
+         BS_delta_0=BS_delta_0,
+         BS_delta_1=BS_delta_1,
+         RNN_delta_0=RNN_delta_0,
+         RNN_delta_1=RNN_delta_1)
+
+#grid_X.unsqueeze_(-1)
+#outputs, _ = net(grid_X)
 #
 #plt.figure()
-#plt.plot(X[:,1,:], outputs[1].detach().numpy().flatten(), '.')
-
-plt.figure()
-plt.subplot(1, 2, 1)
-plt.plot(grid_S0, outputs[0].detach().numpy().flatten(), 'b-')
-plt.plot(grid_S0, BS_delta_0, 'k-')
-
-
-plt.subplot(1, 2, 2)
-plt.plot(grid_S1, outputs[1].detach().numpy().flatten(), 'b-')
-plt.plot(grid_S1, BS_delta_1, 'k-')
+#plt.subplot(1, 2, 1)
+#plt.plot(grid_S0, outputs[0].detach().numpy().flatten(), 'b-')
+#plt.plot(grid_S0, BS_delta_0, 'k-')
+#
+#plt.subplot(1, 2, 2)
+#plt.plot(grid_S1, outputs[1].detach().numpy().flatten(), 'b-')
+#plt.plot(grid_S1, BS_delta_1, 'k-')
 
 
 
