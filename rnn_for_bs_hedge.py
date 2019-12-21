@@ -147,8 +147,8 @@ grid_X.unsqueeze_(-1)
 BS_delta_0 = delta_call_BS(grid_S0, K, T, r, sigma)
 BS_delta_1 = delta_call_BS(grid_S1, K, T-dt, r, sigma)
 
-RNN_delta_0 = np.zeros((grid_size, num_epochs));
-RNN_delta_1 = np.zeros((grid_size, num_epochs));
+RNN_delta_0 = np.zeros((grid_size, num_epochs))
+RNN_delta_1 = np.zeros((grid_size, num_epochs))
 
 for epoch in range(num_epochs):
     running_loss = 0.0
