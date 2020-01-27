@@ -46,5 +46,11 @@ Now I can try: ``M-x pyvenv-activate`` followed by ``<path>``. Works!
 Wrong. The environment activates, but I can't import numpy. This problem doesn't exist in the anaconda prompt so
 elpy isn't playing nice with conda.
 
+## Pulling my old pieces of jumbled code into pymathfi
+[https://saintgimp.org/2013/01/22/merging-two-git-repositories-into-one-repository-without-losing-file-history/](This)
+seems to be what I want to do.
+Okay, doesn't quite do what I want because pymathfi already had a history.
+So I had to add the ``--allow-unrelated-histories`` option to the ``merge`` command.
+
 
 
