@@ -51,6 +51,6 @@ elpy isn't playing nice with conda.
 seems to be what I want to do.
 Okay, doesn't quite do what I want because pymathfi already had a history.
 So I had to add the ``--allow-unrelated-histories`` option to the ``merge`` command.
-
+I got this idea from [https://github.community/t5/How-to-use-Git-and-GitHub/How-to-deal-with-quot-refusing-to-merge-unrelated-histories-quot/m-p/16305#M5000](here).
 
 
