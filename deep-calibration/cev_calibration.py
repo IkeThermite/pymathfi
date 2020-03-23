@@ -119,7 +119,7 @@ test_predictions = np.zeros((test_samples, 2, num_epochs))
 for epoch in range(num_epochs):
     running_loss = 0.0
     for i, data in enumerate(training_loader, 0):
-        inputs, targets = data;
+        inputs, targets = data
         # Zero the parameter gradients
         optimizer.zero_grad()
         

@@ -26,9 +26,22 @@ def delta_call_BS(S0, K, T, r, sigma):
 
 def price_put_CEV(S0, K, T, r, sigma, alpha):
     kappa = 2 * r / (sigma ** 2 * (1 - alpha)
-        * (np.exp(2 * 3 * (1 - alpha) * T) - 1))
+        * (np.exp(2 * r * (1 - alpha) * T) - 1))
     x = kappa * S0 ** (2 * (1 - alpha)) * np.exp(2 * r * (1 - alpha) * T)
     y = kappa * K ** (2 * (1 - alpha))
     z = 2 + 1 / (1 - alpha)
     return -S0 * stats.ncx2.cdf(y, z, x) + (
             K * np.exp(-r * T) * (1 - stats.ncx2.cdf(x, z - 2, y)))
+
+def price_call_CEV(S0, K, T, r, sigma, alpha):
+    kappa = 2 * r / (sigma ** 2 * (1 - alpha)
+        * (np.exp(2 * r * (1 - alpha) * T) - 1))
+    x = kappa * S0 ** (2 * (1 - alpha)) * np.exp(2 * r * (1 - alpha) * T)
+    y = kappa * K ** (2 * (1 - alpha))
+    z = 2 + 1 / (1 - alpha)
+    return S0 * (1 - stats.ncx2.cdf(y, z, x)) - (
+            K * np.exp(-r * T) * stats.ncx2.cdf(x, z - 2, y))
+
+
+if (__name__ == '__main__'):
+    print(f'Executing {__file__} as a standalone script')

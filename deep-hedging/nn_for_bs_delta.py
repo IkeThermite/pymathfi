@@ -34,7 +34,7 @@ def delta_put_BS(S0, K, T, r, sigma):
     return -stats.norm.cdf(-d1(S0, K, T, r, sigma))
 
 def delta_call_BS(S0, K, T, r, sigma):
-    return stats.norm.cdf(d1(S0, K, T, r, sigma));
+    return stats.norm.cdf(d1(S0, K, T, r, sigma))
 # %% Parameters
 filename = 'bs_delta_1'
 S0 = 100
