@@ -2,5 +2,4 @@
 *.pth
 *.*~
 *.npz
-tests/__pycache__
-analytical/__pycache__
+__pycache__/
