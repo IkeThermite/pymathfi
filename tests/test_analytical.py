@@ -53,6 +53,3 @@ class TestPricing(unittest.TestCase):
                 self.assertAlmostEqual(analytical.price_call_CEV(
                     self.S0, strikes[j], self.T, self.r, sig_CEV[i], alphas[i]),
                     target_prices[i][j])
-
-if __name__ == '__main__':
-    unittest.main()
