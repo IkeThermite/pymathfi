@@ -1,5 +1,5 @@
 import unittest
-import analytical
+import analytical.pricing as pricing
 
 class TestPricing(unittest.TestCase):
     def setUp(self):
@@ -13,7 +13,7 @@ class TestPricing(unittest.TestCase):
         target_prices = (63.487654789203376, 6.610521528574566, 
             0.000000001412420)
         for i in range(3):
-            self.assertAlmostEqual(analytical.price_put_BS(
+            self.assertAlmostEqual(pricing.price_put_BS(
                 self.S0, strikes[i], self.T, self.r, self.sig), 
                 target_prices[i])
 
@@ -22,7 +22,7 @@ class TestPricing(unittest.TestCase):
         target_prices = (0.616919542730657, 16.126779724978633, 
             81.90325164069322)
         for i in range(3):
-            self.assertAlmostEqual(analytical.price_call_BS(
+            self.assertAlmostEqual(pricing.price_call_BS(
                 self.S0, strikes[i], self.T, self.r, self.sig), 
                 target_prices[i])
 
@@ -36,7 +36,7 @@ class TestPricing(unittest.TestCase):
             [0.526050894195097, 9.252524142765573, 32.526199550777335]]
         for i in range(3):
             for j in range(3):
-                self.assertAlmostEqual(analytical.price_put_CEV(
+                self.assertAlmostEqual(pricing.price_put_CEV(
                     self.S0, strikes[j], self.T, self.r, sig_CEV[i], alphas[i]),
                     target_prices[i][j])
 
@@ -50,6 +50,6 @@ class TestPricing(unittest.TestCase):
             [46.235805812037526, 18.768782339169633, 5.848961025742998]]
         for i in range(3):
             for j in range(3):
-                self.assertAlmostEqual(analytical.price_call_CEV(
+                self.assertAlmostEqual(pricing.price_call_CEV(
                     self.S0, strikes[j], self.T, self.r, sig_CEV[i], alphas[i]),
                     target_prices[i][j])
