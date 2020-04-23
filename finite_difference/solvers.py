@@ -19,10 +19,12 @@ class FD1DThetaMethod():
     def initial_condition(self, stock, tau):
         return self.product.terminal_condition(stock, 
                 self.product.maturity - tau)
+
+    def local_volatility(self, stock, tau):
+        return self.model.local_volatility(stock, self.product.maturity - tau)
     
     def solve(self):
         theta = 0.5
-        sig = self.model.volatility
         r = self.model.short_rate
         N = self.model.stock_steps
         M = self.model.time_steps
@@ -41,18 +43,27 @@ class FD1DThetaMethod():
                 np.diag(-2 * np.ones(N - 1)))
         D1 = np.diag(Smin / dS + np.arange(1, N))
         D2 = D1 ** 2
-        F = ((1 - r * dtau) * I + 0.5 * r * dtau * D1 @ T1 
-                + 0.5 * sig ** 2 * dtau * D2 @ T2)
-        G = 2 * I - F
-        bl = 0.5 * dtau * (Smin / dS + 1) * (sig ** 2 * (Smin / dS + 1) 
+       
+        # Boundary matrix
+        bl = 0.5 * dtau * (Smin / dS + 1) * (
+                self.local_volatility(Smin + dS, tau) ** 2 * (Smin / dS + 1) 
                 - r) * self.lower_boundary(Smin, tau)
-        bu = 0.5 * dtau * (Smax / dS - 1) * (sig ** 2 * (Smax / dS - 1) 
+        bu = 0.5 * dtau * (Smax / dS - 1) * (
+                self.local_volatility(Smax - dS, tau) ** 2 * (Smax / dS - 1) 
                 + r) * self.upper_boundary(Smax, tau)
         B = np.vstack((bl, np.zeros((N - 3, M + 1)), bu))
 
         U = np.zeros((N - 1, M + 1))
         U[:, 0] = self.initial_condition(S[1:-1], 0)
         for i in range(1, M + 1):
+            Sigma = np.diag(self.local_volatility(S[1:-1], tau[i-1]) ** 2)
+            F = ((1 - r * dtau) * I + 0.5 * r * dtau * D1 @ T1 
+                + 0.5 * dtau * Sigma @ D2 @ T2)
+            
+            Sigma = np.diag(self.local_volatility(S[1:-1], tau[i]) ** 2)
+            G = ((1 + r * dtau) * I - 0.5 * r * dtau * D1 @ T1 
+                - 0.5 * dtau * Sigma @ D2 @ T2)
+
             A = theta * G + (1 - theta) * I
             b = (((1 - theta) * F + theta * I) @ U[:, i - 1] 
                     + (1 - theta) * B[:, i - 1] + theta * B[:, i])
