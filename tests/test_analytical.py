@@ -1,4 +1,5 @@
 import unittest
+import numpy as np
 import analytical.pricing as pricing
 
 class TestPricing(unittest.TestCase):
@@ -9,22 +10,22 @@ class TestPricing(unittest.TestCase):
         self.sig = 0.2        
 
     def test_price_put_BS(self):
-        strikes = (180, 100, 20)
+        strikes = np.array([180, 100, 20])
         target_prices = (63.487654789203376, 6.610521528574566, 
             0.000000001412420)
-        for i in range(3):
-            self.assertAlmostEqual(pricing.price_put_BS(
-                self.S0, strikes[i], self.T, self.r, self.sig), 
-                target_prices[i])
+        analytical_prices = pricing.price_put_BS(self.S0, strikes, self.T, 
+                self.r, self.sig)
+        for i in range(len(strikes)):
+            self.assertAlmostEqual(analytical_prices[i], target_prices[i])
 
     def test_price_call_BS(self):
-        strikes = (180, 100, 20)
+        strikes = np.array([180, 100, 20])
         target_prices = (0.616919542730657, 16.126779724978633, 
             81.90325164069322)
+        analytical_prices = pricing.price_call_BS(self.S0, strikes, self.T, 
+                self.r, self.sig)
         for i in range(3):
-            self.assertAlmostEqual(pricing.price_call_BS(
-                self.S0, strikes[i], self.T, self.r, self.sig), 
-                target_prices[i])
+            self.assertAlmostEqual(analytical_prices[i], target_prices[i])
 
     def test_price_put_CEV(self):
         strikes = (60, 100, 140)

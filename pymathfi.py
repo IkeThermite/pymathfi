@@ -1,27 +1,38 @@
+import numpy as np
+import scipy.stats as stats
+
+import monte_carlo.monte_carlo as mc
 import analytical
 import finite_difference as fd
-import numpy as np
-import monte_carlo.monte_carlo as mc
+
+# %% Vectorized Analytical Pricing Test
+S0 = 100
+T = 2
+r = 0.05
+sig = 0.2
+strikes = (180, 100, 20)
+analytical_prices = analytical.pricing.price_put_BS(S0, np.asarray(strikes), T, r, sig)
 
 # %% OO MC Implementation Test
-np.random.seed(0)
-sig = 0.2
-r = 0.06
-S0 = 100
-K = 100
-num_samples = 100000
-T = 1
+# np.random.seed(0)
+# sig = 0.2
+# r = 0.06
+# S0 = 100
+# K = 100
+# #  build a sanity check in here for accuracy simulations
+# num_samples = 50000
+# T = 1
+# target_accuracy = 1e-2
 
-model = mc.MCGeometricBrownianMotion(sig, r, S0)
-product = mc.MCEuropeanCallOption(K, T, r)
+# model = mc.MCGeometricBrownianMotion(sig, r, S0)
+# product = mc.MCEuropeanCallOption(K, T, r)
 
-pricer = mc.MCPricer(product, model)
-MC_price, MC_std = pricer.price(0, num_samples)
+# pricer = mc.MCPricer(product, model)
+# mc_price, mc_std, accuracy = pricer.price(0, num_samples, target_accuracy)
 
-analytical_price = analytical.pricing.price_call_BS(S0, K, T, r, sig)
-print(MC_price)
-print(analytical_price)
-
+# analytical_price = analytical.pricing.price_call_BS(S0, K, T, r, sig)
+# print(mc_price)
+# print(analytical_price)
 
 
 # %% Finite Difference Tests
