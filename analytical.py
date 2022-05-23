@@ -47,6 +47,5 @@ def black_scholes_call_delta(S0, K, T, r, sigma):
     return norm.cdf(d1(S0, K, T, r, sigma))
 
 
-
     
         

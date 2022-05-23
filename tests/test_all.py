@@ -6,7 +6,7 @@ Created on Tue May  3 14:20:10 2022
 """
 import numpy as np
 
-import analytical_formulae as formula
+import analytical as formula
 from pytest import approx
 
 class TestAnalyticalFormulae:
