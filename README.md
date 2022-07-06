@@ -30,18 +30,18 @@ Right now, the entry points to the code are `run_tests.py` and `run_examples.py`
         - [x] 1D Theta Method, CEV, Put
         - [x] 1D Theta Method, CEV, Call
     - **Examples:**
-        - [] 1D Theta Method, Black-Scholes, Put
-        - [] 1D Theta Method, CEV, Put
+        - [ ] 1D Theta Method, Black-Scholes, Put
+        - [ ] 1D Theta Method, CEV, Put
 - **Monte Carlo:**
     - **Products:**
         - [x] European Put
         - [x] European Call
     - **Solvers:**
-        - [] Crude Monte Carlo
-        - [] Crude Monte Carlo with Targeted Accuracy
+        - [ ] Crude Monte Carlo
+        - [ ] Crude Monte Carlo with Targeted Accuracy
     - **Models:**
         - [x] Black-Scholes
-        - [] CEV
+        - [ ] CEV
     - **Tests:**
         - [ ] Crude Monte Carlo, Black-Scholes Put
         - [ ] Crude Monte Carlo, Black-Scholes Call
