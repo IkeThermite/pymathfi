@@ -3,6 +3,8 @@
 A collection of math finance experiments in python.
 The directory layout follows "Application with Internal Packages" from [Python Application Layouts: A Reference](https://realpython.com/python-application-layouts/).
 
+Right now, the entry points to the code are `run_tests.py` and `run_examples.py`.
+
 ### To-do:
 - **Analytical Formulae:**
     - [x] Black-Scholes Analytical Put and Call Prices
@@ -36,6 +38,7 @@ The directory layout follows "Application with Internal Packages" from [Python A
         - [x] European Call
     - **Solvers:**
         - [] Crude Monte Carlo
+        - [] Crude Monte Carlo with Targeted Accuracy
     - **Models:**
         - [x] Black-Scholes
         - [] CEV
