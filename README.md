@@ -27,5 +27,20 @@ The directory layout follows "Application with Internal Packages" from [Python A
         - [x] 1D Theta Method, Black-Scholes, Call
         - [x] 1D Theta Method, CEV, Put
         - [x] 1D Theta Method, CEV, Call
-- **Examples:**
-
+    - **Examples:**
+        - [] 1D Theta Method, Black-Scholes, Put
+        - [] 1D Theta Method, CEV, Put
+- **Monte Carlo:**
+    - **Products:**
+        - [x] European Put
+        - [x] European Call
+    - **Solvers:**
+        - [] Crude Monte Carlo
+    - **Models:**
+        - [x] Black-Scholes
+        - [] CEV
+    - **Tests:**
+        - [ ] Crude Monte Carlo, Black-Scholes Put
+        - [ ] Crude Monte Carlo, Black-Scholes Call
+    - **Examples:**
+        - [x] Path Simulation, Black-Scholes
