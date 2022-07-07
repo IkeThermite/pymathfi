@@ -19,7 +19,7 @@ def gbm_rv(S0, t, mu, sigma):
     SDE: dS_t = mu S_t dt + sigma S_t dW_t
     Returns S_t, a scipy.stats random variable    
     """
-    return lognormal_rv(np.ln(S0) + (mu - 0.5*sigma**2)*t, sigma**2 * t)
+    return lognormal_rv(np.log(S0) + (mu - 0.5*sigma**2)*t, sigma**2 * t)
 
 #%% Black-Scholes Analytical Formulae
 def d1(S0, K, T, r, sigma):

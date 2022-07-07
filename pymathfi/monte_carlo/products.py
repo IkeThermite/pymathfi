@@ -8,14 +8,9 @@ import numpy as np
 class MCProduct():
     def __init__(self, maturity):
         self.maturity = maturity
-    
+            
     def payoff(self, underlying):
         raise NotImplementedError()
-
-        
-class MCIdentity(MCProduct):
-    def payoff(self, underlying):
-        return underlying
 
 
 class MCEuropeanCallOption(MCProduct):
@@ -25,6 +20,7 @@ class MCEuropeanCallOption(MCProduct):
     def __init__(self, strike, maturity):
         super().__init__(maturity)
         self.strike = strike
+        self.timeline = np.array([[maturity]])
     
     def payoff(self, underlying):
         # Reminder: np.maximum is element-wise
@@ -38,6 +34,7 @@ class MCEuropeanPutOption(MCProduct):
     def __init__(self, strike, maturity):
         super().__init__(maturity)
         self.strike = strike
+        self.timeline = np.array([[maturity]])
         
     def payoff(self, underlying):
         # Reminder: np.maximum is element-wise

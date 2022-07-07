@@ -47,3 +47,7 @@ Right now, the entry points to the code are `run_tests.py` and `run_examples.py`
         - [ ] Crude Monte Carlo, Black-Scholes Call
     - **Examples:**
         - [x] Path Simulation, Black-Scholes
+            - [x] Plot mean using gmb_rv
+        - [x] Crude Monte Carlo, Black-Scholes Put
+        - [x] Crude Monte Carlo, Black-Scholes Call
+        
