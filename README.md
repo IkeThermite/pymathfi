@@ -37,7 +37,7 @@ Right now, the entry points to the code are `run_tests.py` and `run_examples.py`
         - [x] European Put
         - [x] European Call
     - **Solvers:**
-        - [ ] Crude Monte Carlo
+        - [x] Crude Monte Carlo
         - [ ] Crude Monte Carlo with Targeted Accuracy
     - **Models:**
         - [x] Black-Scholes
